@@ -14,7 +14,7 @@
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="", style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">BarBro</a>
+          <a class="navbar-brand" href="/welcome", style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">BarBro</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,7 +33,7 @@
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Коктейли
+                    Спирты
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Джин</a></li>
@@ -47,6 +47,14 @@
               </li>
             </ul>
           </div>
+            {% if current_user.is_authenticated %}
+    <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+{% else %}
+    <p>
+        <a class="btn" href="/register">Зарегистрироваться</a>
+        <a class="btn" href="/login">Войти</a>
+    </p>
+{% endif %}
         <span class="navbar-text">Пейте вкусно, а главное с умом!</span>
       </nav>
 </header>
