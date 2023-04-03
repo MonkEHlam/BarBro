@@ -4,8 +4,10 @@ from flask import Flask, render_template, redirect, abort, request
 from data import db_session
 from forms.RegisterForm import RegisterForm
 from forms.LoginForm import LoginForm
-from forms.CocktailForm import CocktailForm
+from forms.TagForm import TagForm
+from forms.CocktailForm import CocktailFormBuilder
 from data.users import User
+from data.tags import Tag
 from data.cocktails import Cocktail
 from flask_login import (
     LoginManager,
@@ -17,7 +19,6 @@ from flask_login import (
 import json
 import os
 
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
 login_manager = LoginManager()
@@ -25,7 +26,7 @@ login_manager.init_app(app)
 
 
 def main():
-    db_session.global_init("db/cocktails.db")
+    db_session.global_init("db/BarBro.db")
     db_sess = db_session.create_session()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
@@ -66,13 +67,13 @@ def reqister():
 
 @app.route("/add_cocktail", methods=["GET", "POST"])
 def new_cocktail():
-    form = CocktailForm()
+    form = CocktailFormBuilder()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         if (
-            db_sess.query(Cocktail)
-            .filter(Cocktail.name == form.name.data.upper())
-            .first()
+                db_sess.query(Cocktail)
+                        .filter(Cocktail.name == form.name.data.capitalize())
+                        .first()
         ):
             return render_template(
                 "new_cocktail.html",
@@ -85,15 +86,46 @@ def new_cocktail():
             "dishes": [dish for dish in form.dishes.data.split()],
         }
         cocktail = Cocktail(
-            name=form.name.data,
+            name=form.name.data.capitalize(),
             parts=json.dumps(parts, ensure_ascii=False),
             receipt=form.receipt.data,
             history=form.history.data if form.history.data != "" else None,
+            tags=json.dumps({"tags": [str(form[field].label.text) for field in form.fields]})
         )
         db_sess.add(cocktail)
         db_sess.commit()
+        for field in form.fields:
+            tag = db_sess.query(Tag).filter(str(form[field].label.text).capitalize() == Tag.name).first()
+            data = json.loads(tag.cocktails)
+            data['cocktails'].append(cocktail.id)
+            tag.cocktails = json.dumps(f'{data}')
+            db_sess.commit()
+
         return redirect("/welcome")
-    return render_template("new_cocktail.html", title="Регистрация", form=form)
+    return render_template("new_cocktail.html", title="Новый коктейль", form=form)
+
+
+@app.route("/tag", methods=["GET", "POST"])
+def new_tag():
+    form = TagForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        if (
+                db_sess.query(Tag)
+                        .filter(Tag.name == form.name.data.capitalize())
+                        .first()
+        ):
+            return render_template(
+                "new_tag.html",
+                title="Новый тег",
+                form=form,
+                message="Такой тег уже есть",
+            )
+        tag = Tag(name=form.name.data.capitalize())
+        db_sess.add(tag)
+        db_sess.commit()
+        return redirect("/tag")
+    return render_template("new_tag.html", title="Новый тег", form=form)
 
 
 @login_manager.user_loader
