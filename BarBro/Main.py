@@ -1,5 +1,3 @@
-import datetime
-
 from flask import Flask, render_template, redirect, abort, request
 from data import db_session
 from forms.RegisterForm import RegisterForm
@@ -71,9 +69,9 @@ def new_cocktail():
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         if (
-                db_sess.query(Cocktail)
-                        .filter(Cocktail.name == form.name.data.capitalize())
-                        .first()
+            db_sess.query(Cocktail)
+            .filter(Cocktail.name == form.name.data.capitalize())
+            .first()
         ):
             return render_template(
                 "new_cocktail.html",
@@ -90,31 +88,56 @@ def new_cocktail():
             parts=json.dumps(parts, ensure_ascii=False),
             receipt=form.receipt.data,
             history=form.history.data if form.history.data != "" else None,
-            tags=json.dumps({"tags": [str(form[field].label.text) for field in form.fields]})
+            tags=json.dumps(
+                {"tags": [str(form[field].label.text) for field in form.fields if form[field].data]},
+                ensure_ascii=True
+            ),
         )
         db_sess.add(cocktail)
-        db_sess.commit()
         for field in form.fields:
-            tag = db_sess.query(Tag).filter(str(form[field].label.text).capitalize() == Tag.name).first()
-            data = json.loads(tag.cocktails)
-            data['cocktails'].append(cocktail.id)
-            tag.cocktails = json.dumps(f'{data}')
-            db_sess.commit()
+            if form[field].data:
+                tag = (
+                    db_sess.query(Tag)
+                    .filter(str(form[field].label.text) == Tag.name)
+                    .first()
+                )
+                data = json.loads(tag.cocktails)
+                data["cocktails"].append(cocktail.id)
+                tag.cocktails = json.dumps(data)
+        db_sess.commit()
 
         return redirect("/welcome")
     return render_template("new_cocktail.html", title="Новый коктейль", form=form)
 
+
+@app.route("/edit_cocktail/<int:id>", methods=["GET", "POST"])
+def edit_cocktail():
+    form = CocktailFormBuilder()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        cocktail = db_sess.query(Cocktail).filter(
+            Cocktail.id == id
+        )
+        if cocktail:
+            form.name.data = Cocktail.name
+            form.ingridients.data = json.loads(Cocktail.parts)[0]
+            form.dishes.data = json.loads(Cocktail.parts)[1]
+            form.history.data = Cocktail.history if Cocktail.history is not None else ''
+            form.receipt.data = Cocktail.receipt
+
+            for tag in json.loads(Cocktail.tags)["tags"]:
+                for field in form.fields:
+                    if str(form[field].label.text) == tag:
+                        form[field].default = 'checked'
+        else:
+            abort(404)
 
 @app.route("/tag", methods=["GET", "POST"])
 def new_tag():
     form = TagForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        if (
-                db_sess.query(Tag)
-                        .filter(Tag.name == form.name.data.capitalize())
-                        .first()
-        ):
+        if db_sess.query(Tag).filter(Tag.name == form.name.data.capitalize()).first():
             return render_template(
                 "new_tag.html",
                 title="Новый тег",

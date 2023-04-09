@@ -3,8 +3,8 @@ from wtforms import SubmitField, StringField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired
 import sys
 sys.path.append("..")
-
 from data import tags, db_session
+
 
 class CocktailFormBase(FlaskForm):
     name = StringField("Название", validators=[DataRequired()])
@@ -20,15 +20,18 @@ class CocktailFormBase(FlaskForm):
     submit = SubmitField("Добавить")
 
 
-
 def CocktailFormBuilder():
     class CocktailForm(CocktailFormBase):
         pass
 
     db_sess = db_session.create_session()
     for i, tag in enumerate(db_sess.query(tags.Tag).all()):
-        setattr(CocktailForm, 'tag_%d' % i, BooleanField(label=tag))
+        setattr(CocktailForm, "tag_%d" % i, BooleanField(label=tag))
     form = CocktailForm()
-    setattr(CocktailForm, 'fields', [field for field in form.__dir__() if field[:3] == 'tag'])
+    setattr(
+        CocktailForm,
+        "fields",
+        [field for field in form.__dir__() if field[:3] == "tag"],
+    )
 
     return CocktailForm()
