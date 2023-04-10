@@ -25,9 +25,20 @@ login_manager.init_app(app)
 
 def main():
     db_session.global_init("db/BarBro.db")
-    db_sess = db_session.create_session()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+
+def delete_cocktail_from_tags(db_sess, id, tags):
+    for tag in tags['tags']:
+        t = (
+            db_sess.query(Tag)
+            .filter(tag == Tag.name)
+            .first()
+        )
+        data = json.loads(t.cocktails)
+        data['cocktails'].remove(id)
+        t.cocktails = json.dumps(data, ensure_ascii=True)
 
 
 @app.route("/")
@@ -69,9 +80,9 @@ def new_cocktail():
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         if (
-            db_sess.query(Cocktail)
-            .filter(Cocktail.name == form.name.data.capitalize())
-            .first()
+                db_sess.query(Cocktail)
+                        .filter(Cocktail.name == form.name.data.capitalize())
+                        .first()
         ):
             return render_template(
                 "new_cocktail.html",
@@ -79,10 +90,12 @@ def new_cocktail():
                 form=form,
                 message="Такой коктейль уже есть",
             )
+
         parts = {
             "ingridients": [ingridient for ingridient in form.ingridients.data.split()],
             "dishes": [dish for dish in form.dishes.data.split()],
         }
+
         cocktail = Cocktail(
             name=form.name.data.capitalize(),
             parts=json.dumps(parts, ensure_ascii=False),
@@ -94,6 +107,7 @@ def new_cocktail():
             ),
         )
         db_sess.add(cocktail)
+
         for field in form.fields:
             if form[field].data:
                 tag = (
@@ -104,6 +118,10 @@ def new_cocktail():
                 data = json.loads(tag.cocktails)
                 data["cocktails"].append(cocktail.id)
                 tag.cocktails = json.dumps(data)
+
+        if form.image.data:
+            cocktail.image = request.FILES[form.image.name].read()
+
         db_sess.commit()
 
         return redirect("/welcome")
@@ -112,25 +130,81 @@ def new_cocktail():
 
 @app.route("/edit_cocktail/<int:id>", methods=["GET", "POST"])
 def edit_cocktail():
-    form = CocktailFormBuilder()
-    if request.method == "GET":
+    if current_user.is_admin:
+        form = CocktailFormBuilder()
+        if request.method == "GET":
+            db_sess = db_session.create_session()
+            cocktail = db_sess.query(Cocktail).filter(
+                Cocktail.id == id
+            ).first()
+            if cocktail:
+                form.name.data = Cocktail.name
+                form.ingridients.data = json.loads(Cocktail.parts)[0]
+                form.dishes.data = json.loads(Cocktail.parts)[1]
+                form.history.data = Cocktail.history if Cocktail.history is not None else ''
+                form.receipt.data = Cocktail.receipt
+
+                for tag in json.loads(Cocktail.tags)["tags"]:
+                    for field in form.fields:
+                        if str(form[field].label.text) == tag:
+                            form[field].default = 'checked'
+            else:
+                abort(404)
+
+        if form.validate_on_submit():
+            db_sess = db_session.create_session()
+            cocktail = db_sess.query(Cocktail).filter(
+                Cocktail.id == id
+            )
+            if cocktail:
+                delete_cocktail_from_tags(db_sess, cocktail.id, json.loads(cocktail.tags))
+                parts = {
+                    "ingridients": [ingridient for ingridient in form.ingridients.data.split()],
+                    "dishes": [dish for dish in form.dishes.data.split()],
+                }
+                cocktail.name = form.name.data.capitalize()
+                cocktail.parts = json.dumps(parts, ensure_ascii=False)
+                cocktail.receipt = form.receipt.data
+                cocktail.history = form.history.data if form.history.data != "" else None
+                cocktail.tags = json.dumps(
+                    {"tags": [str(form[field].label.text) for field in form.fields if form[field].data]},
+                    ensure_ascii=True)
+
+                for field in form.fields:
+                    if form[field].data:
+                        tag = (
+                            db_sess.query(Tag)
+                            .filter(str(form[field].label.text) == Tag.name)
+                            .first()
+                        )
+                        data = json.loads(tag.cocktails)
+                        if cocktail.id not in data["cocktails"]:
+                            data["cocktails"].append(cocktail.id)
+                            tag.cocktails = json.dumps(data)
+
+                if form.image.data:
+                    cocktail.image = request.FILES[form.image.name].read()
+
+                db_sess.commit()
+
+                return redirect("/welcome")
+        return render_template('new_cocktail.html',
+                               title='Редактирование коктейля',
+                               form=form
+                               )
+
+
+@app.route("/delete_cocktail_absolutly_super_giga_micro_pablo_sure/<int:id>")
+def delete_cocktail():
+    if current_user.is_admin:
         db_sess = db_session.create_session()
         cocktail = db_sess.query(Cocktail).filter(
             Cocktail.id == id
         )
         if cocktail:
-            form.name.data = Cocktail.name
-            form.ingridients.data = json.loads(Cocktail.parts)[0]
-            form.dishes.data = json.loads(Cocktail.parts)[1]
-            form.history.data = Cocktail.history if Cocktail.history is not None else ''
-            form.receipt.data = Cocktail.receipt
-
-            for tag in json.loads(Cocktail.tags)["tags"]:
-                for field in form.fields:
-                    if str(form[field].label.text) == tag:
-                        form[field].default = 'checked'
-        else:
-            abort(404)
+            delete_cocktail_from_tags(db_sess, cocktail.id, cocktail.tags)
+            db_sess.delete(cocktail)
+            db_sess.commit()
 
 @app.route("/tag", methods=["GET", "POST"])
 def new_tag():

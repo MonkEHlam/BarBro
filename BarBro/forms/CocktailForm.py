@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, TextAreaField, BooleanField
-from wtforms.validators import DataRequired
+from wtforms import SubmitField, StringField, TextAreaField, BooleanField, FileField
+from wtforms.validators import DataRequired, regexp
 import sys
+from re import sub
 sys.path.append("..")
 from data import tags, db_session
 
@@ -16,6 +17,13 @@ class CocktailFormBase(FlaskForm):
     )
     receipt = TextAreaField("Рецепт", validators=[DataRequired()])
     history = TextAreaField("История")
+
+    image = FileField(u'Image File', [regexp(u'^[^/\\\\]\.jpg$')])
+    description = TextAreaField(u'Image Description')
+
+    def validate_image(self, field):
+        if field.data:
+            field.data = sub(r'[^a-z0-9_.-]', '_', field.data)
 
     submit = SubmitField("Добавить")
 
