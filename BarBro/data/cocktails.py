@@ -1,5 +1,10 @@
+import sys
+import os.path
 import sqlalchemy
 from .db_session import SqlAlchemyBase
+import json
+
+sys.path.append("..")
 
 
 class Cocktail(SqlAlchemyBase):
@@ -7,12 +12,37 @@ class Cocktail(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
-    parts = sqlalchemy.Column(sqlalchemy.String)
+    parts = sqlalchemy.Column(
+        sqlalchemy.String
+    )  # json like {"ingridients": [str, str...], "dishes": [str, str...]}
     receipt = sqlalchemy.Column(sqlalchemy.String)
     history = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    tags = sqlalchemy.Column(sqlalchemy.String, default='{tags: []}')
-    with open('cocktail_plug_img.jpg', 'rb') as data:
-        photo = sqlalchemy.Column(sqlalchemy.BLOB, default=open("../static/image/plug_img.png"))
+    tags = sqlalchemy.Column(sqlalchemy.String, default="{tags: []}")
+    with open(
+        "./static/image/plug_img.jpg",
+        "rb",
+    ) as data:
+        photo = sqlalchemy.Column(sqlalchemy.BLOB, default=data.read())
 
     def __repr__(self):
         return f"<Cocktail> {self.id} {self.name}"
+
+    def get_photo(self):
+        with open(f"./static/image/{self.id}.jpg", "wb") as file:
+            file.write(self.photo)
+            return str(self.id) + ".jpg"
+
+    def clear_photo(self):
+        if os.path.isfile(f"./static/image/{self.id}.jpg"):
+            os.remove(f"./static/image/{self.id}.jpg")
+
+    def set_default_photo(self):
+        with open(
+            "./static/image/plug_img.jpg",
+            "rb",
+        ) as data:
+            self.photo = data.read()
+
+    def get_ingridients(self):
+        data = json.loads(self.parts)
+        return [ingridient for ingridient in data["ingridients"]]

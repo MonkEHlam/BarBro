@@ -7,56 +7,55 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
     rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" 
     crossorigin="anonymous">
+    <link rel="stylesheet" href="static/stylsheet/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <title>{{title}}</title>
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/welcome", style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">BarBro</a>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/welcome", style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">BarBro</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Коктейли
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Классические</a></li>
-                    <li><a class="dropdown-item" href="#">Тики</a></li>
-                    <li><a class="dropdown-item" href="#">Шоты</a></li>
-                    <li><a class="dropdown-item" href="#">Список IBA</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Спирты
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Джин</a></li>
-                    <li><a class="dropdown-item" href="#">Ром</a></li>
-                    <li><a class="dropdown-item" href="#">Текила</a></li>
-                    <li><a class="dropdown-item" href="#">Виски</a></li>
-                    <li><a class="dropdown-item" href="#">Бренди</a></li>
-                    <li><a class="dropdown-item" href="#">Водка</a></li>
-                    <li><a class="dropdown-item" href="#">Ликер</a></li>
-                </ul>
-              </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Коктейли
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Классические</a></li>
+                        <li><a class="dropdown-item" href="#">Тики</a></li>
+                        <li><a class="dropdown-item" href="#">Шоты</a></li>
+                        <li><a class="dropdown-item" href="#">Список IBA</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Спирты
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Джин</a></li>
+                        <li><a class="dropdown-item" href="#">Ром</a></li>
+                        <li><a class="dropdown-item" href="#">Текила</a></li>
+                        <li><a class="dropdown-item" href="#">Виски</a></li>
+                        <li><a class="dropdown-item" href="#">Бренди</a></li>
+                        <li><a class="dropdown-item" href="#">Водка</a></li>
+                        <li><a class="dropdown-item" href="#">Ликер</a></li>
+                    </ul>
+                </li>
             </ul>
-          </div>
-            {% if current_user.is_authenticated %}
-    <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
-{% else %}
-    <p>
-        <a class="btn" href="/register">Зарегистрироваться</a>
-        <a class="btn" href="/login">Войти</a>
-    </p>
-{% endif %}
+        </div>
+        {% if current_user.is_authenticated %}
+        <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        {% else %}
+        <p>
+            <a class="btn" href="/register">Зарегистрироваться</a>
+            <a class="btn" href="/login">Войти</a>
+        </p>
+        {% endif %}
         <span class="navbar-text">Пейте вкусно, а главное с умом!</span>
-      </nav>
 </header>
 <!-- Begin page content -->
 <main role="main" class="container">
