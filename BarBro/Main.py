@@ -257,7 +257,7 @@ def new_tag():
                 form=form,
                 message="Такой тег уже есть",
             )
-        tag = Tag(name=form.name.data.capitalize())
+        tag = Tag(name=form.name.data.capitalize(), category=form.category.data)
         db_sess.add(tag)
         db_sess.commit()
         return redirect("/tag")

@@ -11,7 +11,7 @@ class Tag(SqlAlchemyBase):
     cocktails = sqlalchemy.Column(
         sqlalchemy.String, default=json.dumps({"cocktails": []})
     )
-
+    category = sqlalchemy.Column(sqlalchemy.String)
     def __repr__(self):
         return f"{self.name}"
 

@@ -3,10 +3,7 @@ import sqlalchemy
 from flask_login import UserMixin
 from sqlalchemy import orm
 from werkzeug.security import generate_password_hash, check_password_hash
-import sys
-
-sys.path.append("..")
-from data.db_session import SqlAlchemyBase
+from .db_session import SqlAlchemyBase
 
 
 class User(SqlAlchemyBase, UserMixin):

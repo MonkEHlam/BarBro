@@ -8,8 +8,14 @@
             {{ form.name.label }}<br>
             {{ form.name(class="form-control") }}<br>
         </p>
+        {% for subfield in form.category %}
+        <tr>
+            <td>{{ subfield }}</td>
+            <td>{{ subfield.label }}</td>
+        </tr>
+        {% endfor %}
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
         <div>{{ message }}</div>
-        <a class="btn btn-primary" href="/welcome">Вернуться на галвную</a>
     </form>
 {% endblock %}
+
