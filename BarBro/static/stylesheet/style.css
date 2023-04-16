@@ -1,5 +1,7 @@
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+a {
+    color: black;
+    font-size: 18px;
+}
+p{
+    font-size: 20px;
 }

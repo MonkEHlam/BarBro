@@ -128,8 +128,8 @@ def new_cocktail():
                 data["cocktails"].append(cocktail.id)
                 tag.cocktails = json.dumps(data)
 
-        if form.image.data:
-            cocktail.image = cocktail.image = request.FILES[form.image.name].read()
+        if form.photo.data:
+            cocktail.photo = form.photo.data.read()
 
         db_sess.commit()
 
@@ -160,7 +160,7 @@ def edit_cocktail(id):
                 for tag in json.loads(cocktail.tags)["tags"]:
                     for field in form.fields:
                         if str(form[field].label.text) == tag:
-                            form[field].default = "Checked"
+                            form[field].default = "checked"
             else:
                 abort(404)
 
@@ -310,10 +310,14 @@ def cocktails_list(tags):
     return cocktail_list
 
 
-def tag_list():
-    db_sess = db_session.create_session()
-    cocktail_list = db_sess.query(Cocktail).all()
-    return cocktail_list
+@app.route("/cocktail/<int:id>")
+def cocktail(id):
+    db = db_session.create_session()
+    if db.query(Cocktail).filter(Cocktail.id == id).first():
+        return render_template(
+            "cocktail.html",
+            cocktail=db.query(Cocktail).filter(Cocktail.id == id).first(),
+        )
 
 
 if __name__ == "__main__":

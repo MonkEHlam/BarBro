@@ -19,7 +19,7 @@ class Cocktail(SqlAlchemyBase):
     history = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     tags = sqlalchemy.Column(sqlalchemy.String, default="{tags: []}")
     with open(
-        "./static/image/plug_img.jpg",
+        "./static/image/plug_img.png",
         "rb",
     ) as data:
         photo = sqlalchemy.Column(sqlalchemy.BLOB, default=data.read())
@@ -46,3 +46,7 @@ class Cocktail(SqlAlchemyBase):
     def get_ingridients(self):
         data = json.loads(self.parts)
         return [ingridient for ingridient in data["ingridients"]]
+
+    def get_dishes(self):
+        data = json.loads(self.parts)
+        return [ingridient for ingridient in data["dishes"]]

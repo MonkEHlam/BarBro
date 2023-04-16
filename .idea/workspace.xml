@@ -4,24 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d582b71-d8e3-4e02-a085-4a3347d84865" name="Changes" comment="Complete tag and cocktail adding">
-      <change afterPath="$PROJECT_DIR$/BarBro/data/my_exceptions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BarBro/pablo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BarBro/static/stylesheet/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BarBro/templates/cocktails_list.html" afterDir="false" />
+    <list default="true" id="1d582b71-d8e3-4e02-a085-4a3347d84865" name="Changes" comment="complete cocktails_list forming">
+      <change afterPath="$PROJECT_DIR$/BarBro/static/image/plug_img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BarBro/templates/cocktail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BarBro/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BarBro/data/cocktails.py" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/data/cocktails.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BarBro/data/tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/data/tags.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BarBro/data/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/data/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BarBro/db/BarBro.db" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/db/BarBro.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BarBro/forms/CocktailForm.py" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/forms/CocktailForm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BarBro/static/image/plug_img.png" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/static/image/plug_img.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BarBro/static/image/plug_img.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BarBro/static/stylesheet/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/static/stylesheet/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BarBro/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BarBro/templates/cocktails_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/templates/cocktails_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BarBro/templates/new_cocktail.html" beforeDir="false" afterPath="$PROJECT_DIR$/BarBro/templates/new_cocktail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/c3aa04467d50_add_administration_rights_to_user_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/c3aa04467d50_add_administration_rights_to_user_class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/cfbd5ae42a28_add_image_to_cocktail_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/cfbd5ae42a28_add_image_to_cocktail_class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/f1d4c3bbf500_add_administration_rights_to_user_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/f1d4c3bbf500_add_administration_rights_to_user_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/colorscheme_link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/colorscheme_link.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -64,21 +59,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/slend/Documents/Monke/BarBro_Project/BarBro/BarBro&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/slend/Documents/Monke/BarBro_Project/BarBro/BarBro/static/image",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\slend\Documents\Monke\BarBro_Project\BarBro\BarBro\static\image" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\slend\Documents\Monke\BarBro_Project\BarBro\BarBro\static" />
       <recent name="C:\Users\slend\Documents\Monke\BarBro_Project\BarBro\BarBro\static\image" />
@@ -154,7 +152,7 @@
       <workItem from="1681057949453" duration="2149000" />
       <workItem from="1681126014778" duration="1690000" />
       <workItem from="1681133410311" duration="37275000" />
-      <workItem from="1681564440552" duration="5758000" />
+      <workItem from="1681564440552" duration="20212000" />
     </task>
     <task id="LOCAL-00001" summary="Add new db classes and cocktail form">
       <created>1680274503097</created>
@@ -198,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681126804082</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="complete cocktails_list forming">
+      <created>1681574223238</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1681574223238</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,12 +242,13 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add new db classes and cocktail form" />
     <MESSAGE value="Complete tag and cocktail adding" />
-    <option name="LAST_COMMIT_MESSAGE" value="Complete tag and cocktail adding" />
+    <MESSAGE value="complete cocktails_list forming" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete cocktails_list forming" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BarBro$pablo.coverage" NAME="pablo Coverage Results" MODIFIED="1681392425095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BarBro" />
     <SUITE FILE_PATH="coverage/BarBro$hui.coverage" NAME="hui Coverage Results" MODIFIED="1681127108758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BarBro" />
     <SUITE FILE_PATH="coverage/BarBro$CocktailForm.coverage" NAME="CocktailForm Coverage Results" MODIFIED="1680271115782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BarBro/forms" />
-    <SUITE FILE_PATH="coverage/BarBro$Main.coverage" NAME="Main Coverage Results" MODIFIED="1681403215991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BarBro" />
+    <SUITE FILE_PATH="coverage/BarBro$Main.coverage" NAME="Main Coverage Results" MODIFIED="1681648188647" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BarBro" />
   </component>
 </project>

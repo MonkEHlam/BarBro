@@ -1,11 +1,16 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, TextAreaField, BooleanField, FileField
-from wtforms.validators import DataRequired, regexp
+from wtforms.validators import DataRequired
 import sys
-import re
 
 sys.path.append("..")
 from data import tags, db_session
+
+
+class MyBooleanField(BooleanField):
+    def __init__(self):
+        super().__init__()
+        self.is_checked = False
 
 
 class CocktailFormBase(FlaskForm):
@@ -18,7 +23,6 @@ class CocktailFormBase(FlaskForm):
     )
     receipt = TextAreaField("Рецепт", validators=[DataRequired()])
     history = TextAreaField("История")
-
     photo = FileField("Фото")
     submit = SubmitField("Добавить")
 
@@ -29,7 +33,7 @@ def CocktailFormBuilder():
 
     db_sess = db_session.create_session()
     for i, tag in enumerate(db_sess.query(tags.Tag).all()):
-        setattr(CocktailForm, "tag_%d" % i, BooleanField(label=tag))
+        setattr(CocktailForm, "tag_%d" % i, MyBooleanField(label=tag))
     form = CocktailForm()
     setattr(
         CocktailForm,

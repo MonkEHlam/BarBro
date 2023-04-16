@@ -1,17 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid">
-    <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" list="{{ tags }}" aria-label="Поиск тегов" >
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-</div>
 <div class="row row-cols-md-3 g-5" style="position: center">
           {% for cocktail in cocktails %}
           <div class="col">
             <div class="card">
-              <img src="static/image/{{ cocktail.get_photo() }}" class="card-img-top" height="260" alt="Не удалось загрузить изображение">
+              <img src="/static/image/{{ cocktail.get_photo() }}" class="card-img-top" height="260" alt="Не удалось загрузить изображение">
               <div class="card-body">
                 <h5> <a href="cocktail/{{ cocktail.id }}"  class="card-title">{{ cocktail.name }}</a> </h5>
                 <p class="card-text">
@@ -32,7 +26,6 @@
                     <a href="/edit_cocktail/{{ cocktail.id }}" class="btn btn-primary">Изменить</a>
                       <input type="button" class="btn btn-danger" onclick="{{ func(cocktail.id) }}" value="Удалить фото" input>
                     <a href="/delete_cocktail_absolutly_super_giga_micro_pablo_sure/{{ cocktail.id }}" class="btn btn-danger">Удалить</a>
-
                   </p>
                   {% endif %}
               </div>
