@@ -38,7 +38,7 @@ class Cocktail(SqlAlchemyBase):
 
     def set_default_photo(self):
         with open(
-            "./static/image/plug_img.jpg",
+            "./static/image/plug_img.png",
             "rb",
         ) as data:
             self.photo = data.read()

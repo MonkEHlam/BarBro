@@ -1,12 +1,59 @@
 {% extends "base.html" %}
 
 {% block content %}
+<form id="1" action="" method="post">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBases" aria-expanded="false" aria-controls="collapseExample">
+            Спирты
+        </button>
+        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTastes" aria-expanded="false" aria-controls="collapseExample">
+            Вкусы
+        </button>
+        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTypes" aria-expanded="false" aria-controls="collapseExample">
+            Типы
+        </button>
+          <input class="btn btn-primary" type="submit" value="Применить теги" />
+      </div>
+    <div class="collapse"
+         id="collapseBases">
+        <div class="card card-body" style="width: 170px">
+            {% for tag in tags_bases %}
+            <p style="font-size: 15px">
+            <input type="checkbox" id="{{ tag }}" name="base{{ tag.id }}" value="{{ tag.id }}" />
+            <label for="{{ tag }}">{{ tag.name }}</label>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="collapse"
+         id="collapseTastes">
+        <div class="card card-body" style="width: 170px">
+            {% for tag in tags_tastes %}
+            <p style="font-size: 15px">
+            <input type="checkbox" id="{{ tag }}" name="taste{{ tag.id }}" value="{{ tag.id }}" />
+            <label for="{{ tag }}">{{ tag.name }}</label>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+       <div class="collapse"
+         id="collapseTypes">
+        <div class="card card-body" style="width: 170px">
+            {% for tag in tags_types %}
+            <p style="font-size: 15px">
+            <input type="checkbox" id="{{ tag }}" name="type{{ tag.id }}" value="{{ tag.id }}" />
+            <label for="{{ tag }}">{{ tag.name }}</label>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
 
 <div class="row row-cols-md-3 g-5" style="position: center">
           {% for cocktail in cocktails %}
           <div class="col">
             <div class="card">
-              <img src="/static/image/{{ cocktail.get_photo() }}" class="card-img-top" height="260" alt="Не удалось загрузить изображение">
+              <img src="./static/image/{{ cocktail.get_photo() }}" class="card-img-top" height="260" alt="Не удалось загрузить изображение">
               <div class="card-body">
                 <h5> <a href="cocktail/{{ cocktail.id }}"  class="card-title">{{ cocktail.name }}</a> </h5>
                 <p class="card-text">
@@ -25,14 +72,14 @@
                   {% if current_user.is_admin == True %}
                   <p>
                     <a href="/edit_cocktail/{{ cocktail.id }}" class="btn btn-primary">Изменить</a>
-                      <input type="button" class="btn btn-danger" onclick="{{ func(cocktail.id) }}" value="Удалить фото" input>
+                      <input type="button" class="btn btn-danger" onclick="{{ cocktail.set_default_photo() }}" value="Удалить фото" input>
                     <a href="/delete_cocktail_absolutly_super_giga_micro_pablo_sure/{{ cocktail.id }}" class="btn btn-danger">Удалить</a>
                   </p>
                   {% endif %}
               </div>
             </div>
-              <div style="display: none">{{ cocktail.clear_photo() }}</div>
           </div>
           {% endfor %}
       </div>
+</form>
 {% endblock %}

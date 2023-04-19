@@ -80,9 +80,9 @@ def new_cocktail():
         print("imin")
         db_sess = db_session.create_session()
         if (
-            db_sess.query(Cocktail)
-            .filter(Cocktail.name == form.name.data.capitalize())
-            .first()
+                db_sess.query(Cocktail)
+                        .filter(Cocktail.name == form.name.data.capitalize())
+                        .first()
         ):
             print("error")
             return render_template(
@@ -292,24 +292,45 @@ def logout():
     return redirect("/")
 
 
-def cocktails_list(tags):
+def cocktails_list(tags=''):
     db_sess = db_session.create_session()
     if tags:
         cocktails_id_from_tags = []
         for tag in tags:
-            if isinstance(tag, Cocktail):
-                cocktails_id_from_tags.append(set(tag.get_cocktails()))
-            else:
-                raise my_exceptions.DBTypeError("tags")
-        final_ids = max([len(a) for a in cocktails_id_from_tags])
+            cocktails_id_from_tags.append(set(tag.get_cocktails()))
+        final_ids = cocktails_id_from_tags[0]
+        print(cocktails_id_from_tags)
         for ids in cocktails_id_from_tags:
             final_ids = final_ids.intersection(ids)
         cocktail_list = db_sess.query(Cocktail).filter(Cocktail.id.in_(list(final_ids)))
+        return cocktail_list
     else:
         cocktail_list = db_sess.query(Cocktail).all()
-    return cocktail_list
+        return cocktail_list
 
-
+@app.route("/cocktails", methods=["GET", "POST"])
+def cocktail_table():
+    tags = []
+    if request.method == "POST":
+        print(request.form)
+        base_tags_id = []
+        taste_tags_id = []
+        type_tags_id = []
+        for key, value in request.form.to_dict().items():
+            if "base" in key:
+                base_tags_id.append(int(value))
+            if "taste" in key:
+                taste_tags_id.append(int(value))
+            if "type" in key:
+                type_tags_id.append(int(value))
+        if base_tags_id:
+            tags += (get_tags("base", base_tags_id))
+        if taste_tags_id:
+            tags += (get_tags("taste", taste_tags_id))
+        if type_tags_id:
+            tags += (get_tags("type", type_tags_id))
+        print(tags)
+    return render_template("cocktails_list.html", cocktails=cocktails_list(tags), tags_bases=get_tags("base"), tags_tastes=get_tags("taste"), tags_types=get_tags("type"))
 @app.route("/cocktail/<int:id>")
 def cocktail(id):
     db = db_session.create_session()
@@ -318,6 +339,16 @@ def cocktail(id):
             "cocktail.html",
             cocktail=db.query(Cocktail).filter(Cocktail.id == id).first(),
         )
+
+
+def get_tags(category, ids=[]):
+    if category == 'taste' or category == 'base' or category == 'type':
+        db = db_session.create_session()
+        if ids:
+            return db.query(Tag).filter(Tag.category == category, Tag.id.in_(ids)).all()
+        return db.query(Tag).filter(Tag.category == category).all()
+    else:
+        abort(400)
 
 
 if __name__ == "__main__":
