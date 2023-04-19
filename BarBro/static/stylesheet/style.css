@@ -1,0 +1,61 @@
+.nav-item {
+    color: whitesmoke;
+    font-size: 20px;
+}
+p{
+    color: whitesmoke;
+    font-size: 20px;
+}
+a{
+    color: whitesmoke;
+}
+.btn{
+    color: whitesmoke;
+    background-color: #374785;
+    font-size: 18px;
+}
+.card{
+    card-color: #24305E;
+    card-bg: #24305E
+}
+li{
+    color: whitesmoke;
+}
+
+ul{
+    color: whitesmoke;
+}
+.nav-link{
+    color: whitesmoke;
+}
+
+.navbar-brand{
+    color: whitesmoke;
+}
+.navbar-text{
+    color: whitesmoke;
+}
+
+h5{
+    color: whitesmoke;
+}
+
+.collapse{
+    color: #374785;
+}
+
+h1{
+    text-indent: 20px;
+    color: #fff3f3;
+    font-family: Lobster;
+    src: url(/static/fonts/Lobster-Regular.ttf)
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
+    height: auto;
+    width: 100vw;
+    padding: 40px;
+    background: #24305E;
+}
