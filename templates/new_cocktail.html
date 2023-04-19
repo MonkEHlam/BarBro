@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Новый коктейль</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control") }}<br>
+        </p>
+        <p>
+            {{ form.ingridients.label }}<br>
+            {{ form.ingridients(class="form-control") }}<br>
+        </p>
+        <p>
+            {{ form.dishes.label }}<br>
+            {{ form.dishes(class="form-control") }}<br>
+        </p>
+        <p>
+            {{ form.receipt.label }}<br>
+            {{ form.receipt(class="form-control") }}<br>
+        </p>
+         <p>
+            {{ form.history.label }}<br>
+            {{ form.history(class="form-control") }}<br>
+        </p>
+        <p> {{ form.s }}</p>
+        <div class="row">
+            <table class="table table-bordered">
+                <tbody>
+                {% for field in form.fields %}
+                <tr>
+                    <td>
+                        {{ form[field] }} {{form[field].label}}
+                    </td>
+                </tr>
+
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        <p>
+            {{ form.photo }}<br>
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div>{{ message }}</div>
+    </form>
+{% endblock %}
