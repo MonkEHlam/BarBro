@@ -5,5 +5,8 @@ from wtforms.validators import DataRequired
 
 class TagForm(FlaskForm):
     name = StringField("Название", validators=[DataRequired()])
-    category = RadioField("Категория тега", choices=[("type", "Тип"), ("base", "Основной сипрт"), ("taste", "Вкус")])
+    category = RadioField(
+        "Категория тега",
+        choices=[("type", "Тип"), ("base", "Основной сипрт"), ("taste", "Вкус")],
+    )
     submit = SubmitField("Добавить")

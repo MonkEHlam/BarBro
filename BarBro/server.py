@@ -19,6 +19,7 @@ from flask_login import (
 )
 import json
 import os
+from static.texts.welcome import text
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
@@ -43,7 +44,8 @@ def delete_cocktail_from_tags(db_sess, id, tags):
 @app.route("/")
 @app.route("/welcome")
 def welcome():
-    return render_template("index.html")
+    print(text)
+    return render_template("index.html", text=text)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -80,9 +82,9 @@ def new_cocktail():
         print("imin")
         db_sess = db_session.create_session()
         if (
-                db_sess.query(Cocktail)
-                        .filter(Cocktail.name == form.name.data.capitalize())
-                        .first()
+            db_sess.query(Cocktail)
+            .filter(Cocktail.name == form.name.data.capitalize())
+            .first()
         ):
             print("error")
             return render_template(
@@ -160,7 +162,7 @@ def edit_cocktail(id):
                 for tag in json.loads(cocktail.tags)["tags"]:
                     for field in form.fields:
                         if str(form[field].label.text) == tag:
-                            form[field].default = "checked"
+                            form[field].render_kw = {"checked": True}
             else:
                 abort(404)
 
@@ -210,7 +212,7 @@ def edit_cocktail(id):
                     cocktail.photo = form.photo.data.read()
                 db_sess.commit()
 
-                return redirect("/welcome")
+                return redirect("/cocktails")
         return render_template(
             "new_cocktail.html", title="Редактирование коктейля", form=form
         )
@@ -233,6 +235,8 @@ def delete_cocktail(id):
         return redirect("/")
 
 
+@app.route("/delete_photo/<int:id>")
+@login_required
 def delete_photo(id):
     if current_user.is_admin:
         db_sess = db_session.create_session()
@@ -240,8 +244,8 @@ def delete_photo(id):
         if cocktail:
             cocktail.set_default_photo()
             db_sess.commit()
-        return redirect("#")
-    return redirect("#")
+        return redirect("/cocktails")
+    return redirect("/cocktails")
 
 
 @app.route("/tag", methods=["GET", "POST"])
@@ -292,14 +296,13 @@ def logout():
     return redirect("/")
 
 
-def cocktails_list(tags=''):
+def cocktails_list(tags=""):
     db_sess = db_session.create_session()
     if tags:
         cocktails_id_from_tags = []
         for tag in tags:
             cocktails_id_from_tags.append(set(tag.get_cocktails()))
         final_ids = cocktails_id_from_tags[0]
-        print(cocktails_id_from_tags)
         for ids in cocktails_id_from_tags:
             final_ids = final_ids.intersection(ids)
         cocktail_list = db_sess.query(Cocktail).filter(Cocktail.id.in_(list(final_ids)))
@@ -308,11 +311,11 @@ def cocktails_list(tags=''):
         cocktail_list = db_sess.query(Cocktail).all()
         return cocktail_list
 
+
 @app.route("/cocktails", methods=["GET", "POST"])
 def cocktail_table():
     tags = []
     if request.method == "POST":
-        print(request.form)
         base_tags_id = []
         taste_tags_id = []
         type_tags_id = []
@@ -324,13 +327,20 @@ def cocktail_table():
             if "type" in key:
                 type_tags_id.append(int(value))
         if base_tags_id:
-            tags += (get_tags("base", base_tags_id))
+            tags += get_tags("base", base_tags_id)
         if taste_tags_id:
-            tags += (get_tags("taste", taste_tags_id))
+            tags += get_tags("taste", taste_tags_id)
         if type_tags_id:
-            tags += (get_tags("type", type_tags_id))
-        print(tags)
-    return render_template("cocktails_list.html", cocktails=cocktails_list(tags), tags_bases=get_tags("base"), tags_tastes=get_tags("taste"), tags_types=get_tags("type"))
+            tags += get_tags("type", type_tags_id)
+    return render_template(
+        "cocktails_list.html",
+        cocktails=cocktails_list(tags),
+        tags_bases=get_tags("base"),
+        tags_tastes=get_tags("taste"),
+        tags_types=get_tags("type"),
+    )
+
+
 @app.route("/cocktail/<int:id>")
 def cocktail(id):
     db = db_session.create_session()
@@ -342,7 +352,7 @@ def cocktail(id):
 
 
 def get_tags(category, ids=[]):
-    if category == 'taste' or category == 'base' or category == 'type':
+    if category == "taste" or category == "base" or category == "type":
         db = db_session.create_session()
         if ids:
             return db.query(Tag).filter(Tag.category == category, Tag.id.in_(ids)).all()

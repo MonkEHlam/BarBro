@@ -1,7 +1,7 @@
 import sys
 import os.path
 import sqlalchemy
-from .db_session import SqlAlchemyBase
+from .db_session import SqlAlchemyBase, create_session
 import json
 
 sys.path.append("..")
@@ -28,13 +28,13 @@ class Cocktail(SqlAlchemyBase):
         return f"<Cocktail> {self.id} {self.name}"
 
     def get_photo(self):
-        with open(f"./static/image/{self.id}.jpg", "wb") as file:
+        with open(f"./static/image/{self.id}.png", "wb") as file:
             file.write(self.photo)
-            return str(self.id) + ".jpg"
+            return str(self.id) + ".png"
 
     def clear_photo(self):
-        if os.path.isfile(f"./static/image/{self.id}.jpg"):
-            os.remove(f"./static/image/{self.id}.jpg")
+        if os.path.isfile(f"./static/image/{self.id}.png"):
+            os.remove(f"./static/image/{self.id}.png")
 
     def set_default_photo(self):
         with open(
@@ -42,6 +42,7 @@ class Cocktail(SqlAlchemyBase):
             "rb",
         ) as data:
             self.photo = data.read()
+            print(1)
 
     def get_ingridients(self):
         data = json.loads(self.parts)
