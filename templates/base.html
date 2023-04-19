@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/stylesheet/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <title>{{title}}</title>
+</head>
+<body style="background-color: #A8D0E6">
+<header style="margin-bottom: 50px">
+    <nav class="navbar navbar-expand-lg" style="background-color: #374785  ; font-size: 25px">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/welcome", style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 25px">BarBro</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/cocktails">Все коктейли</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Коктейли
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="">Классические</a></li>
+                        <li><a class="dropdown-item" href="">Тики</a></li>
+                        <li><a class="dropdown-item" href="">Шоты</a></li>
+                        <li><a class="dropdown-item" href="">Список IBA</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Спирты
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="">Джин</a></li>
+                        <li><a class="dropdown-item" href="">Ром</a></li>
+                        <li><a class="dropdown-item" href="">Текила</a></li>
+                        <li><a class="dropdown-item" href="">Виски</a></li>
+                        <li><a class="dropdown-item" href="">Бренди</a></li>
+                        <li><a class="dropdown-item" href="">Водка</a></li>
+                        <li><a class="dropdown-item" href="">Ликер</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="offcanvas" href="#profile" role="button" aria-controls="offcanvasExample">
+  Профиль
+</a>
+                </li>
+
+            </ul>
+        </div>
+        <span class="navbar-text">Пейте вкусно, а главное с умом!</span>
+        </div>
+        </nav>
+</header>
+<!-- Begin page content -->
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+</body>
+<footer>
+<span style="color: whitesmoke; font-size: 20px; text-align: centers">Алкоголь вредит вашему здоровью</span>
+</footer>
+</html>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="profile" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header" style="background-color: #374785">
+      {% if current_user.is_authenticated %}
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Добрый вечер, {{ current_user.name }}!</h5>
+      {% else %}
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Добро пожаловать!</h5>
+            {% endif %}
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+    <div class="offcanvas-body" style="background-color: #24305E">
+        <div>
+            {% if current_user.is_authenticated %}
+            <p><a class="btn" href="/#">Любимые коктейли</a></p>
+            {% else %}
+            <p><a class="btn" href="/register">Зарегистрироваться</a></p>
+            <p><a class="btn" href="/login">Войти</a></p>
+            {% endif %}
+        </div>
+        {% if current_user.is_admin == True %}
+        <p><a class="btn" href="/add_cocktail">Добавить коктейль</a></p>
+        <p><a class="btn" href="/tag">Добавить тег</a></p>
+        {% endif %}
+        <p><a class="btn" href="/logout" style="color: rgba(255,47,0,0.66)">Выйти</a></p>
+    </div>
+    </div>
+</div>
