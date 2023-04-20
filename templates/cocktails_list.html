@@ -67,13 +67,9 @@
                 <p class="card-text">
                   <ul>
                     {% for ingridient in cocktail.get_ingridients() %}
-                    <li>
-                        {% if loop.index == 4 %}
-                            <div>...</div>
-                        {% else %}
-                            <p> {{ ingridient }}</p>
+                        {% if loop.index <= 4 %}
+                            <li><p> {{ ingridient }}</p></li>
                         {% endif %}
-                    </li>
                     {% endfor %}
                   </ul>
                 </p>
@@ -83,7 +79,7 @@
                       <p>
                     <a class="btn" href="/delete_photo/{{ cocktail.id }}">Удалить фото</a>
                     <a href="/delete_cocktail_absolutly_super_giga_micro_pablo_sure/{{ cocktail.id }}" class="btn">Удалить</a>
-                  </p>
+                  </p></p>
                   {% endif %}
               </div>
             </div>

@@ -1,5 +1,3 @@
-from typing import List, Type
-
 from flask import Flask, render_template, redirect, abort, request
 from data import db_session, my_exceptions
 
@@ -44,7 +42,7 @@ def delete_cocktail_from_tags(db_sess, id, tags):
 @app.route("/")
 @app.route("/welcome")
 def welcome():
-    return render_template("index.html", text=text)
+    return render_template("index.html", text=text, title='Главная')
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -337,6 +335,7 @@ def cocktail_table():
         tags_bases=get_tags("base"),
         tags_tastes=get_tags("taste"),
         tags_types=get_tags("type"),
+        title='Список'
     )
 
 
@@ -344,9 +343,11 @@ def cocktail_table():
 def cocktail(id):
     db = db_session.create_session()
     if db.query(Cocktail).filter(Cocktail.id == id).first():
+        cocktail=db.query(Cocktail).filter(Cocktail.id == id).first()
         return render_template(
             "cocktail.html",
-            cocktail=db.query(Cocktail).filter(Cocktail.id == id).first(),
+            cocktail=cocktail,
+            title=cocktail.name
         )
 
 

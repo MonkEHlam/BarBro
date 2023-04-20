@@ -46,13 +46,24 @@ h5{
 
 h1{
     text-indent: 20px;
-    color: #fff3f3;
+    color: #24305E;
+    text-align: justify;
     font-family: Lobster;
     src: url(/static/fonts/Lobster-Regular.ttf)
 }
-
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+.content {
+	flex: 1 0 auto;
+}
+.footer {
+	flex: 0 0 auto;
+}
 footer{
-    position: absolute;
+    position: fixed;
     bottom: 0;
     height: auto;
     width: 100vw;
