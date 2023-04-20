@@ -71,7 +71,7 @@ def reqister():
         db_sess.add(user)
         db_sess.commit()
         return redirect("/login")
-    return render_template("login.html", title="Регистрация", form=form)
+    return render_template("register.html", title="Регистрация", form=form)
 
 
 @app.route("/add_cocktail", methods=["GET", "POST"])
